@@ -194,7 +194,7 @@ ConfigErrors dumpConfig(const char * filePath, const ConfigLine * configLines, s
 	fp = fopen(filePath, "w");
 
 	if (fp == NULL) {
-		TraceLog(LOG_ERROR, "Error opening %s: %s ", filePath, strerror(errno));
+		TraceLog(LOG_ERROR, "Error opening %s: %s", filePath, strerror(errno));
 		res = CONFIG_ERROR;
 		goto cleanMem;
 	}
