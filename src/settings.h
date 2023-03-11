@@ -15,11 +15,19 @@ typedef struct Settings {
 	char name[20];
 	float testNumber;
 
+	// Data used for reading and writing settings to a config file.
+	size_t configLinesSize;
+	ConfigLine * configLines;
+
 } Settings;
 
 extern Settings defaultSettings;
 
-ConfigErrors dumpSettings(const char * filePath, Settings * settings);
+ErrorCodes initSettings(Settings * settings);
+ErrorCodes closeSettings(Settings * settings);
+
+// Use these to read and write settings to config file.
+ConfigErrors dumpSettings(const char * filePath, const Settings * settings);
 ConfigErrors loadSettings(const char * filePath, Settings * settings);
 
 #endif

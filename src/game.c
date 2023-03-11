@@ -9,13 +9,19 @@ void initGame(GameData * gameData, int argc, char ** argv) {
 	setState(MAIN_MENU_STATE, gameData);
 
 	// Settings.
-	gameData->settings = defaultSettings;
+	initSettings(&gameData->settings);
 
-	dumpSettings("settings.set", &gameData->settings);
 	loadSettings("settings.set", &gameData->settings);
+
+	printf("Width: %d\n", gameData->settings.windowWidth);
+	printf("Height: %d\n", gameData->settings.windowHeight);
+	printf("Fullscreen %d\n", gameData->settings.fullScreen);
+	printf("Name: %s\n", gameData->settings.name);
+	printf("Number: %f\n", gameData->settings.testNumber);
 }
 
 void closeGame(GameData * gameData) {
+	closeSettings(&gameData->settings);
 	CloseWindow();
 }
 

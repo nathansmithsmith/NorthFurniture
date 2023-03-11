@@ -11,6 +11,7 @@
  *
  * option = value
  * option = value
+ * # Comments must not have white space before them.
  * ...
  *
  * No tabs in config file.
@@ -26,7 +27,9 @@ typedef enum ConfigErrors {
 	CONFIG_ERROR = -1,
 	CONFIG_TAB_ERROR = -2,
 	CONFIG_MISSING_VALUE = -3,
-	CONFIG_WHITE_SPACE_ERROR = -4
+	CONFIG_WHITE_SPACE_ERROR = -4,
+	CONFIG_INVALID_OPTION = -5,
+	CONFIG_INVALID_VALUE = -6
 } ConfigErrors;
 
 #define CONFIG_ERROR_MAX 255
@@ -46,6 +49,7 @@ typedef struct ConfigLine {
 	char option[CONFIG_LINE_MAX];
 	void * value;
 	ConfigValueTypes type;
+	size_t valueSize; // Used when type is 'VALUE_STRING'.
 } ConfigLine;
 
 // CONFIG_LINE_MAX for 'line' len.
@@ -55,6 +59,9 @@ void createConfigLine(char * line, const ConfigLine lineData);
 // Gets and option and value from a config line.
 // 'CONFIG_LINE_MAX' for buffers sizes.
 ConfigErrors getOptionAndValue(const char * lineBuf, char * optionBuf, char * valueBuf);
+
+// Loads data from 'lineBuf' and writes it to 'configLines'.
+ConfigErrors loadConfigLine(const char * lineBuf, ConfigLine * configLines, size_t configLinesSize);
 
 ConfigErrors dumpConfig(const char * filePath, const ConfigLine * configLines, size_t configLinesSize);
 ConfigErrors loadConfig(const char * filePath, ConfigLine * configLines, size_t configLinesSize);
