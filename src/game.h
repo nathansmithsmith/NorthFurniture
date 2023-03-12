@@ -1,6 +1,7 @@
 #include "gameData.h"
 #include "gameStates.h"
 #include "settings.h"
+#include "textureLoader.h"
 
 #ifndef GAME_H
 #define GAME_H
@@ -14,6 +15,9 @@ typedef struct GameData {
 
 	Settings settings;
 
+	GameTextureData textureData;
+
+	Camera2D playerCamera;
 } GameData;
 
 

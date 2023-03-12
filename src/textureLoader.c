@@ -1,17 +1,32 @@
 #include "textureLoader.h"
+#include "util.h"
 #include <raylib.h>
 
 void initTextureData(GameTextureData * textureData) {
 	textureData->textures = NULL;
 	textureData->texturesSize = 0;
+
+	TraceLog(LOG_INFO, "Game texture data initialization");
 }
 
 void closeTextureData(GameTextureData * textureData) {
-	textureData->texturesSize = 0;
+	int i;
 
-	// Free textures.
-	if (textureData->textures != NULL)
-		free(textureData->textures);
+	if (textureData->textures == NULL) {
+		textureData->texturesSize = 0;
+		return;
+	}
+
+	// Unload textures.
+	for (i = 0; i < textureData->texturesSize; ++i)
+		UnloadTexture(textureData->textures[i]);
+
+	// Free.
+	textureData->texturesSize = 0;
+	free(textureData->textures);
+	textureData->textures = NULL;
+
+	TraceLog(LOG_INFO, "Game texture data closed");
 }
 
 // Add Textures to new texture data.
@@ -22,7 +37,7 @@ ErrorCodes createAndAddTextures(GameTextureData * textureData, const Texture2D *
 	textureData->textures = (Texture2D*)calloc(textureData->texturesSize, sizeof(Texture2D));
 
 	if (textureData->textures == NULL) {
-		TraceLog(LOG_ERROR, "Error allocating memory for 'textureData->textures' %s", strerror(errno));
+		allocationError("textureData->textures");
 		return CERROR;
 	}
 
@@ -33,6 +48,7 @@ ErrorCodes createAndAddTextures(GameTextureData * textureData, const Texture2D *
 }
 
 ErrorCodes addTextures(GameTextureData * textureData, const Texture2D * textures, size_t texturesSize) {
+	int i, j;
 	size_t oldTexturesSize;
 
 	// Textures have not been created yet.
@@ -50,16 +66,34 @@ ErrorCodes addTextures(GameTextureData * textureData, const Texture2D * textures
 	);
 
 	if (textureData->textures == NULL) {
-		TraceLog(LOG_ERROR, "Error reallocating memory for 'textureData->textures' %s", strerror(errno));
+		allocationError("textureData->textures");
 		return CERROR;
 	}
 
 	// Copy new textures.
-	memcpy(
-		textureData->textures + (oldTexturesSize * sizeof(Texture2D)),
-		textures,
-		texturesSize * sizeof(Texture2D)
-	);
+	j = 0;
+	
+	for (i = oldTexturesSize; i < textureData->texturesSize; ++i)
+		textureData->textures[i] = textures[j++];
 
 	return CSUCCESS;
+}
+
+Texture2D * getTexture(GameTextureData textureData, int id) {
+	if (textureData.textures == NULL || id < 0 || id >= textureData.texturesSize)
+		return NULL;
+
+	return &textureData.textures[id];
+}
+
+ErrorCodes loadTexturesFromFiles(GameTextureData * textureData, const char ** files, size_t filesSize) {
+	int i;
+	Texture2D textures[filesSize];
+
+	// Load testures.
+	for (i = 0; i < filesSize; ++i)
+		textures[i] = LoadTexture(files[i]);
+
+	// Add textures.
+	return addTextures(textureData, textures, filesSize);
 }

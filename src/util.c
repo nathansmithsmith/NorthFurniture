@@ -155,3 +155,14 @@ int hexCharToInt(char c) {
 
 	return cvalue - 87; // Weird magic number made for your pain.
 }
+
+void allocationError(const char * varibleName) {
+	if (strcmp(varibleName, "none") == 0)
+		TraceLog(LOG_WARNING, "Error allocating memory: %s", strerror(errno));
+	else
+		TraceLog(LOG_WARNING, "Error allocating '%s': %s", varibleName, strerror(errno));
+}
+
+void fileOpeningError(const char * filename) {
+		TraceLog(LOG_WARNING, "Error opening %s: %s", filename, strerror(errno));
+}

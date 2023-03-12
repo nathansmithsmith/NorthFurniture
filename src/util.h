@@ -25,4 +25,10 @@ ErrorCodes strToInt(const char * str, size_t n, int * intValue, bool forceHex);
 int charToInt(char c); // -1 on error.
 int hexCharToInt(char c);
 
+// Print formatted error after something like malloc fails.
+// set 'varibleName' to 'none' to not print it.
+void allocationError(const char * varibleName);
+
+void fileOpeningError(const char * filename);
+
 #endif

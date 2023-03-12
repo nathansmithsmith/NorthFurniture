@@ -1,5 +1,6 @@
 #include "configLoader.h"
 #include "util.h"
+#include <raylib.h>
 
 static int compareConfigLines(const void * c1, const void * c2) {
 	const ConfigLine * configLine1 = (const ConfigLine*)c1;
@@ -212,7 +213,7 @@ ConfigErrors dumpConfig(const char * filePath, const ConfigLine * configLines, s
 	fp = fopen(filePath, "w");
 
 	if (fp == NULL) {
-		TraceLog(LOG_ERROR, "Error opening %s: %s", filePath, strerror(errno));
+		fileOpeningError(filePath);
 		res = CONFIG_ERROR;
 		goto cleanMem;
 	}
@@ -242,7 +243,7 @@ ConfigErrors loadConfig(const char * filePath, ConfigLine * configLines, size_t 
 	fp = fopen(filePath, "r");
 
 	if (fp == NULL) {
-		TraceLog(LOG_ERROR, "Error opening %s: %s", filePath, strerror(errno));
+		fileOpeningError(filePath);
 		res = CONFIG_ERROR;
 		goto cleanMem;
 	}

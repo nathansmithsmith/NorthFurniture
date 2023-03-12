@@ -12,7 +12,11 @@ typedef struct GameTextureData {
 void initTextureData(GameTextureData * textureData);
 void closeTextureData(GameTextureData * textureData);
 
-// Adds 'texture' to 'textureData'.
 ErrorCodes addTextures(GameTextureData * textureData, const Texture2D * textures, size_t texturesSize);
+
+// Returns the texture at 'id' in 'textures' or null.
+Texture2D * getTexture(GameTextureData textureData, int id);
+
+ErrorCodes loadTexturesFromFiles(GameTextureData * textureData, const char ** files, size_t filesSize);
 
 #endif
