@@ -23,7 +23,7 @@ typedef struct Settings {
 
 extern Settings defaultSettings;
 
-ErrorCodes initSettings(Settings * settings);
+void initSettings(Settings * settings);
 ErrorCodes closeSettings(Settings * settings);
 
 // Use these to read and write settings to config file.

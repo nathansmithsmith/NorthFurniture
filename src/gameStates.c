@@ -9,7 +9,7 @@ GameState gameStates[STATE_COUNT] = {
 	{ // Menu main.
 		.updateCallback = mainMenuUpdate,
 		.drawCallBack = mainMenuDraw,
-		.data = NULL
+		.data = &mainMenuData
 	},
 	{ // Game play.
 		.updateCallback = gamePlayUpdate, 

@@ -52,6 +52,13 @@ typedef struct ConfigLine {
 	size_t valueSize; // Used when type is 'VALUE_STRING'.
 } ConfigLine;
 
+// Used for sorting config lines and binary search.
+static int compareConfigLines(const void * c1, const void * c2);
+
+// Run after setting all the data in the config lines.
+// It sorts the config lines to be faster for searching.
+void initConfigLines(ConfigLine * configLines, size_t configLinesSize);
+
 // CONFIG_LINE_MAX for 'line' len.
 // Uses 'lineData' to create a nicely formatted config line.
 void createConfigLine(char * line, const ConfigLine lineData);
@@ -59,6 +66,9 @@ void createConfigLine(char * line, const ConfigLine lineData);
 // Gets and option and value from a config line.
 // 'CONFIG_LINE_MAX' for buffers sizes.
 ConfigErrors getOptionAndValue(const char * lineBuf, char * optionBuf, char * valueBuf);
+
+// Returns config line with option as 'optionBuf' or null.
+ConfigLine * findConfigLineWithOption(const char * optionBuf, const ConfigLine * configLines, size_t configLinesSize);
 
 // Loads data from 'lineBuf' and writes it to 'configLines'.
 ConfigErrors loadConfigLine(const char * lineBuf, ConfigLine * configLines, size_t configLinesSize);

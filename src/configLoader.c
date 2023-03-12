@@ -1,6 +1,16 @@
 #include "configLoader.h"
 #include "util.h"
 
+static int compareConfigLines(const void * c1, const void * c2) {
+	const ConfigLine * configLine1 = (const ConfigLine*)c1;
+	const ConfigLine * configLine2 = (const ConfigLine*)c2;
+	return strncmp(configLine1->option, configLine2->option, CONFIG_LINE_MAX);
+}
+
+void initConfigLines(ConfigLine * configLines, size_t configLinesSize) {
+	qsort(configLines, configLinesSize, sizeof(ConfigLine), compareConfigLines);
+}
+
 char * configErrorToString(ConfigErrors error) {
 	switch (error) {
 		case CONFIG_SUCCESS:
@@ -119,8 +129,20 @@ ConfigErrors getOptionAndValue(const char * lineBuf, char * optionBuf, char * va
 	return CONFIG_SUCCESS;
 }
 
+ConfigLine * findConfigLineWithOption(const char * optionBuf, const ConfigLine * configLines, size_t configLinesSize) {
+	ConfigLine key;
+	memcpy(key.option, optionBuf, CONFIG_LINE_MAX);
+
+	return bsearch(
+		&key, 
+		configLines,
+		configLinesSize, 
+		sizeof(ConfigLine),
+		compareConfigLines
+	);
+}
+
 ConfigErrors loadConfigLine(const char * lineBuf, ConfigLine * configLines, size_t configLinesSize) {
-	int i;
 	char optionBuf[CONFIG_LINE_MAX];
 	char valueBuf[CONFIG_LINE_MAX];
 
@@ -137,12 +159,8 @@ ConfigErrors loadConfigLine(const char * lineBuf, ConfigLine * configLines, size
 	if (res != CONFIG_SUCCESS)
 		return res;
 
-	// Search for config line with option.
-	for (i = 0; i < configLinesSize; ++i)
-		if (strncmp(configLines[i].option, optionBuf, CONFIG_LINE_MAX) == 0) {
-			currentConfigLine = &configLines[i];
-			break;
-		}
+	// Search for key.
+	currentConfigLine = findConfigLineWithOption(optionBuf, configLines, configLinesSize);
 
 	// Config line not found.
 	if (currentConfigLine == NULL)

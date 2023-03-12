@@ -10,7 +10,7 @@ Settings defaultSettings = {
 	.testNumber = 2.5
 };
 
-ErrorCodes initSettings(Settings * settings) {
+void initSettings(Settings * settings) {
 	ConfigLine configLines[] = {
 		{"windowWidth", &settings->windowWidth, VALUE_INT},
 		{"windowHeight", &settings->windowHeight, VALUE_INT},
@@ -27,16 +27,13 @@ ErrorCodes initSettings(Settings * settings) {
 
 	// Allocate 'configLines'.
 	settings->configLines = (ConfigLine*)calloc(settings->configLinesSize, sizeof(ConfigLine));
-
-	if (settings->configLines == NULL) {
-		TraceLog(LOG_ERROR, "Error allocating 'settings->configLines': %s", strerror(errno));
-		return CERROR;
-	}
+	assert(settings->configLines != NULL);
 
 	// Copy config line data.
 	memcpy(settings->configLines, configLines, settings->configLinesSize * sizeof(ConfigLine));
 
-	return CSUCCESS;
+	// Init config lines.
+	initConfigLines(settings->configLines, settings->configLinesSize);
 }
 
 ErrorCodes closeSettings(Settings * settings) {

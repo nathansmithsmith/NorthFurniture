@@ -11,6 +11,7 @@ void initGame(GameData * gameData, int argc, char ** argv) {
 	// Settings.
 	initSettings(&gameData->settings);
 
+	//dumpSettings("settings.set", &gameData->settings);
 	loadSettings("settings.set", &gameData->settings);
 
 	printf("Width: %d\n", gameData->settings.windowWidth);
