@@ -3,6 +3,11 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#define SET_BIT(b, n) (b | (0x1 << n))
+#define CLEAR_BIT(b, n) (b & ~(0x1 << n))
+#define IS_BIT_SET(b, n) ((b >> n) & 0x1)
+#define TOGGLE_BIT(b, n) (b ^ (0x1 << n))
+
 // Removes all white spaces on the left.
 void stripLeftWhiteSpace(char * buf, size_t n);
 

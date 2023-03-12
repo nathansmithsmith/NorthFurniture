@@ -1,10 +1,12 @@
 #include "game.h"
+#include "util.h"
 
 void initGame(GameData * gameData, int argc, char ** argv) {
 	// Open window.
 	InitWindow(800, 480, argv[0]);
 
-	// Set state.
+	// Game state.
+	initStates(gameData);
 	gameData->stateId = MAIN_MENU_STATE;
 	setState(MAIN_MENU_STATE, gameData);
 
@@ -22,6 +24,7 @@ void initGame(GameData * gameData, int argc, char ** argv) {
 }
 
 void closeGame(GameData * gameData) {
+	closeStates(gameData);
 	closeSettings(&gameData->settings);
 	CloseWindow();
 }

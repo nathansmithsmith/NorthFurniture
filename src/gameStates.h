@@ -11,15 +11,24 @@ typedef enum StateIds {
 	GAME_PLAY_STATE
 } StateIds;
 
-// Returns next state.
-typedef StateIds (*STATE_UPDATE_CB)(GameData * gameData, void * data);
-typedef void (*STATE_DRAW_CB)(GameData * gameData, void * data);
+#define STATE_CALLBACK_ARGS GameData * gameData, void * data
+
+// Callbacks.
+typedef void (*STATE_INIT_CB)(STATE_CALLBACK_ARGS);
+typedef void (*STATE_CLOSE_CB)(STATE_CALLBACK_ARGS);
+typedef StateIds (*STATE_UPDATE_CB)(STATE_CALLBACK_ARGS); // Returns next state.
+typedef void (*STATE_DRAW_CB)(STATE_CALLBACK_ARGS);
 
 typedef struct GameState {
+	STATE_INIT_CB initCallback; // For when game is started.
+	STATE_CLOSE_CB closeCallback; // For cleaning memory when game ends.
 	STATE_UPDATE_CB updateCallback;
 	STATE_DRAW_CB drawCallBack;
 	void * data; // Can be used for whatever data the state needs.
 } GameState;
+
+void initStates(GameData * gameData);
+void closeStates(GameData * gameData);
 
 // Update can change the game state.
 void updateState(GameData * gameData);

@@ -34,12 +34,15 @@ void initSettings(Settings * settings) {
 
 	// Init config lines.
 	initConfigLines(settings->configLines, settings->configLinesSize);
+
+	TraceLog(LOG_INFO, "Settings initialization");
 }
 
 ErrorCodes closeSettings(Settings * settings) {
 	if (settings->configLines != NULL)
 		free(settings->configLines);
 
+	TraceLog(LOG_INFO, "Settings closed");
 	return CSUCCESS;
 }
 

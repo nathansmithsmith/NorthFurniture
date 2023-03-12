@@ -4,7 +4,14 @@
 #ifndef GAME_PLAYER_H
 #define GAME_PLAYER_H
 
-StateIds gamePlayUpdate(GameData * gameData, void * data);
-void gamePlayDraw(GameData * gameData, void * data);
+typedef struct GamePlayData {
+} GamePlayData;
+
+extern GamePlayData gamePlayData;
+
+void gamePlayInit(STATE_CALLBACK_ARGS);
+void gamePlayClose(STATE_CALLBACK_ARGS);
+StateIds gamePlayUpdate(STATE_CALLBACK_ARGS);
+void gamePlayDraw(STATE_CALLBACK_ARGS);
 
 #endif

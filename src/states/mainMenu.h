@@ -6,11 +6,15 @@
 #define MAIN_MENU_H
 
 typedef struct MainMenuData {
+	StateIds nextState;
+	Rectangle startButton;
 } MainMenuData;
 
 extern MainMenuData mainMenuData;
 
-StateIds mainMenuUpdate(GameData * gameData, void * data);
-void mainMenuDraw(GameData * gameData, void * data);
+void mainMenuInit(STATE_CALLBACK_ARGS);
+void mainMenuClose(STATE_CALLBACK_ARGS);
+StateIds mainMenuUpdate(STATE_CALLBACK_ARGS);
+void mainMenuDraw(STATE_CALLBACK_ARGS);
 
 #endif
