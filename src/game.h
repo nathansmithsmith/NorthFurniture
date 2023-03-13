@@ -2,6 +2,7 @@
 #include "gameStates.h"
 #include "settings.h"
 #include "textureLoader.h"
+#include "tiles.h"
 
 #ifndef GAME_H
 #define GAME_H
@@ -14,10 +15,9 @@ typedef struct GameData {
 	GameState * state;
 
 	Settings settings;
-
 	GameTextureData textureData;
-
 	Camera2D playerCamera;
+	TileMap * tileMap;
 } GameData;
 
 

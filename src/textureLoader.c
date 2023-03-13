@@ -79,11 +79,11 @@ ErrorCodes addTextures(GameTextureData * textureData, const Texture2D * textures
 	return CSUCCESS;
 }
 
-Texture2D * getTexture(GameTextureData textureData, int id) {
+Texture2D getTexture(GameTextureData textureData, int id) {
 	if (textureData.textures == NULL || id < 0 || id >= textureData.texturesSize)
-		return NULL;
+		return (Texture2D){0};
 
-	return &textureData.textures[id];
+	return textureData.textures[id];
 }
 
 ErrorCodes loadTexturesFromFiles(GameTextureData * textureData, const char ** files, size_t filesSize) {

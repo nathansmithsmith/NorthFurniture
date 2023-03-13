@@ -24,9 +24,7 @@ void initGame(GameData * gameData, int argc, char ** argv) {
 	initTextureData(&gameData->textureData);
 
 	const char * textureFiles[255] = {
-		"images/null.png",
-		"images/grass.png",
-		"images/gravel.png",
+		"images/spriteSheet.png",
 		"images/evil_puppy_right_1.png",
 		"images/player_right_1.png"
 	};
@@ -34,14 +32,44 @@ void initGame(GameData * gameData, int argc, char ** argv) {
 	loadTexturesFromFiles(
 		&gameData->textureData, 
 		textureFiles, 
-		5
+		3
 	);
+
+	Texture2D spriteSheet = getTexture(gameData->textureData, 0);
+
+	Tile tileData[] = {
+		{spriteSheet, (Vector2){0.0, 0.0}, 0},
+		{spriteSheet, (Vector2){16.0, 0.0}, 0},
+		{spriteSheet, (Vector2){0.0, 16.0}, 0},
+		{spriteSheet, (Vector2){16.0, 16.0}, 0}
+	};
+
+	// Tile map.
+	gameData->tileMap = createTileMap(
+		200,
+		100,
+		tileData,
+		sizeof(tileData) / sizeof(Tile)
+	);
+
+	TileId * tile;
+	int x, y;
+
+	for (y = 0; y < gameData->tileMap->height; ++y)
+		for (x = 0; x < gameData->tileMap->width; ++x) {
+			tile = getTile(gameData->tileMap, (Vector2){x, y});
+			*tile = x % 4;
+		}
+
+	SetTargetFPS(60);
 }
 
 void closeGame(GameData * gameData) {
 	closeStates(gameData);
 	closeSettings(&gameData->settings);
 	closeTextureData(&gameData->textureData);
+	closeTileMap(gameData->tileMap);
+
 	CloseWindow();
 }
 
