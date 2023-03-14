@@ -17,6 +17,7 @@ typedef enum TileTypes {
 
 typedef uint16_t TileId;
 
+// 🐶
 typedef struct Tile {
 	Texture2D texture;
 	Vector2 texturePosition;

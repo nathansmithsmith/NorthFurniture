@@ -12,6 +12,7 @@
 // Raylib.
 #include <raylib.h>
 #include <raymath.h>
+#include "physac.h"
 
 #ifndef GAME_DATA_H
 #define GAME_DATA_H
